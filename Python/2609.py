@@ -1,4 +1,4 @@
-# 2022 01 06.
+# 2022 01 09.
 
 # https://www.acmicpc.net/problem/2609
 
