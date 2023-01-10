@@ -1,42 +1,42 @@
-# 2022 01 10.
+# 2022 01 11.
 
 # https://www.acmicpc.net/problem/2309
 
 '''
-- 먼저 주어진 범위내의 소수를 모두 구한다.
-- a를 2부터 1씩 증가시키며 a가 소수인지 확인한다.
-- a가 소수라면 b = n-a가 소수인지 확인한다.
-- a, b가 소수라면 결과를 출력한다.
-- input = sys.stdin.readline  <== 여러줄 입력받을때 시간단축에 필요
+- 2가지씩 제거하며 합이 100이 되는 순간을 체크
+- print(*result, sep = "\n")  <== 구분자 사용
 '''
 
 import sys
+input = sys.stdin.readline
 
-def getPrime(end):
-    fList = [0] * (end+1)
-    fList[1] = 1
-    prime = []
-    for i in range(2, end+1):
-        if fList[i]==1:
-            continue
+def getHeight():
+    height = []
+    for _ in range(9):
+        height.append(int(input()))
+    return height
 
-        prime.append(i)
-        for j in range(2, (end//i)+1):
-            fList[i*j] = 1
-    return prime, fList
+def getSolve(hList):
+    tmp = sum(hList) 
+    result = hList.copy()
+
+    stop = False
+    for i in range(9):
+        if stop:
+            break
+        for j in range(i+1,9):
+            if tmp - hList[i] - hList[j] == 100:
+                result.remove(hList[i])
+                result.remove(hList[j])
+                stop = True
+                break
+
+    return sorted(result)
 
 if __name__ == "__main__": 
-    input = sys.stdin.readline
 
-    prime, fList = getPrime(1000000)
+    hList = getHeight()
 
-    while True:
-        n = int(input())
-        if n == 0:
-            break
-        
-        for a in prime:
-            b = n - a
-            if fList[b] == 0:
-                print(f'{n} = {a} + {b}')
-                break
+    result = getSolve(hList)
+
+    print(*result, sep = "\n")
