@@ -3,7 +3,7 @@
 # https://www.acmicpc.net/problem/1476
 
 '''
-- 
+- E, S, M의 주기를 이용해 조건이 만족하는 i 값을 찾는다.
 - 36ms
 '''
 

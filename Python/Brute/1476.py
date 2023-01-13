@@ -3,7 +3,7 @@
 # https://www.acmicpc.net/problem/1476
 
 '''
-- 
+- e, s, m 을 1 씩 늘려가며 조건헤 해당하는 i값을 찾는다.
 - 40ms
 '''
 
