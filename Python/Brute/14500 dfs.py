@@ -14,17 +14,22 @@ dy=[1,0,-1,0]
 
 def dfs(x,y,depth,res):
     global answer
+    # 종료조건1) 탐색을 계속 진행하여도 최댓값에 못 미치는 경우
     if answer >= res + MAX*(4-depth):
         return
-    
+
+    # 종료조건2) 블록 4개를 모두 활용한 경우
     if depth==4:
         answer = max(answer, res)
         return
 
+    # 상하좌우 방향으로 블록 이어 붙여 나가기
     for i in range(4):
-        nx=x+dx[i]
-        ny=y+dy[i]
+        nx=x+dx[i] # 새로운 x 좌표
+        ny=y+dy[i] # 새로운 y 좌표
+        # 새로운 좌표가 유효한 범위 내 있고 탐색이력이 없는 경우
         if 0 <= nx < m and 0 <= ny < n and visit[ny][nx]==0:
+            # 2번째 블록 연결 후 'ㅏ','ㅓ','ㅗ','ㅜ' 만들기
             if depth==2:
                 visit[ny][nx]=1
                 dfs(x,y,depth+1,res+board[ny][nx])
