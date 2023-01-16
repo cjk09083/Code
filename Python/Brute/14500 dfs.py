@@ -14,7 +14,7 @@ dy=[1,0,-1,0]
 
 def dfs(x,y,depth,res):
     global answer
-    if answer >= res + MAX*(4-L):
+    if answer >= res + MAX*(4-depth):
         return
     
     if depth==4:
