@@ -5,8 +5,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>CJK MAP</title>
 	<style>
@@ -90,32 +89,33 @@
 
 </div>
 
-<script type ="text/javascript" src="apikey.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<?=naverkey?>"></script>
 <script>
-var lineData = {};
-var init_lon = 126.9781553;
-var init_lat = 37.5666454;
+let lineData = {}; // lineData 객체 생성
+const init_lon = 126.9781553; // 초기 경도값 상수
+const init_lat = 37.5666454; // 초기 위도값 상수
 
-var zoom = 18;
-	
-var r1Path = [];
-var r2Path = [];
+let zoom = 18; // zoom level 상수
 
-var r1Polyline = "";
-var r1Marker = "";
-var r1Info = "";
-var r2Polyline = "";
-var r2Marker = "";
-var r2Info = "";
-var r1Tbody = "";
-var r2Tbody = "";
+let r1Path = []; // Rover1의 경로를 저장할 배열
+let r2Path = []; // Rover2의 경로를 저장할 배열
 
+let r1Polyline = ""; // Rover1의 Polyline을 저장할 변수
+let r1Marker = ""; // Rover1의 Marker을 저장할 변수
+let r1Info = ""; // Rover1의 정보창을 저장할 변수
+
+let r2Polyline = ""; // Rover2의 Polyline을 저장할 변수
+let r2Marker = ""; // Rover2의 Marker을 저장할 변수
+let r2Info = ""; // Rover2의 정보창을 저장할 변수
+
+let r1Tbody = ""; // Rover1의 위치 데이터를 저장할 tbody
+let r2Tbody = ""; // Rover2의 위치 데이터를 저장할 tbody
+
+// Map을 초기화하는 함수
 function initMap() {
 	console.log("Map 생성");
-	
-	var mapOptions = {
+	const mapOptions = {
 		center: new naver.maps.LatLng(init_lat, init_lon),
 		zoom: zoom,
 		scaleControl: true,
@@ -132,42 +132,31 @@ function initMap() {
 			position: naver.maps.Position.TOP_RIGHT
 		},
 	};
-	var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+	const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 
 	map = new naver.maps.Map(container,mapOptions);
 
-		// 버튼 요소를 가져온다.
-	var button1 = document.getElementById("button1");
-	var button2 = document.getElementById("button2");
+	let button1 = document.getElementById("button1"); // Rover1 버튼 요소 가져오기
+	let button2 = document.getElementById("button2"); // Rover2 버튼 요소 가져오기
 
-	// 버튼에 클릭 이벤트 리스너를 등록한다.
-	button1.addEventListener("click", function() {
-		// 버튼 1을 활성화한다.
-		button1.classList.add("active");
-		// 버튼 2를 비활성화한다.
-		button2.classList.remove("active");
-		$('#dataBody').html(r1Tbody);
+	button1.addEventListener("click", function () {
+		button1.classList.add("active"); // 버튼 1 활성화
+		button2.classList.remove("active"); // 버튼 2 비활성화
+		$("#dataBody").html(r1Tbody); // Rover1의 위치 데이터로 tbody 채우기
 	});
 
-	button2.addEventListener("click", function() {
-		// 버튼 2를 활성화한다.
-		button2.classList.add("active");
-		// 버튼 1을 비활성화한다.
-		button1.classList.remove("active");
-		$('#dataBody').html(r2Tbody);
+	button2.addEventListener("click", function () {
+		button2.classList.add("active"); // 버튼 2 활성화
+		button1.classList.remove("active"); // 버튼 1 비활성화
+		$("#dataBody").html(r2Tbody); // Rover2의 위치 데이터로 tbody 채우기
 	});
-
-	
 	naver.maps.Event.addListener(map, 'click', function(mouseEvent) {
-		console.log(mouseEvent);
-		// console.log("map type: "+map.mapTypeId) 	// normal or hybrid
 		console.log("map click: " + mouseEvent.latlng._lat+", "+mouseEvent.latlng._lng); 
-		var nowLat = mouseEvent.latlng._lat * 1.0, nowLng = mouseEvent.latlng._lng * 1.0;
 		hidePopup();
 	});
-
 }
 
+// 모든 Marker와 Polyline, InfoWindow를 삭제하는 함수
 function removeAllMarker() {
 	hidePopup();
 	if(r1Path.length > 0 ){
@@ -181,6 +170,7 @@ function removeAllMarker() {
 	}
 }
 
+// 모든 nfoWindow를 Close하는 함수
 function hidePopup(){
 	if(r1Path.length > 0 && r1Info != '' ){
 		r1Info.close();
@@ -191,20 +181,20 @@ function hidePopup(){
 }
 
 
+// 모든 Marker와 Polyline, InfoWindow를 새로 추가하는 함수
 function addLine() {
 	removeAllMarker();
-
 	r1Path = []
 	r2Path = []
-	var r1Last = "";
-	var r2Last = "";
+	let r1Last = "";
+	let r2Last = "";
 	r1Tbody = "";
 	r2Tbody = "";
 	r1Info = '';
 	r2Info = '';
 	
 	for (let key in lineData) {
-		var item = lineData[key];	
+		const item = lineData[key];	
 		if (item.r1Lat > 0 && item.r1Status > 0){
 			r1Path.push(new naver.maps.LatLng(item.r1Lat, item.r1Lon))
 			r1Last = item;
@@ -219,18 +209,14 @@ function addLine() {
 				item.id+"</td><td>"+item.created_at+"</td><td>"+item.r2Lat+"</td><td>"+item.r2Lon+"</td></tr>" + r2Tbody
 		}
 	}
-	
-    console.log(r1Path)
-    console.log(r2Path)
 
     if (r2Path.length > 0){
-		var contentString = "<div style='letter-spacing: 1px;line-height: 25px; border: 2px solid black; border-radius: 10px; padding: 10px;'>"+
+		const contentString = "<div style='letter-spacing: 1px;line-height: 25px; border: 2px solid black; border-radius: 10px; padding: 10px;'>"+
 							"<b>Rover2 좌표</b></br>"+ 
 							"위도: "+r2Last.r2Lat+"</br>"+
 							"경도: "+r2Last.r2Lon+"</br>"+
 							r2Last.created_at+"</br>"+
 							"</div>"
-
 		r2Info =  new naver.maps.InfoWindow({
 			content: contentString,
 			borderWidth: 0,
@@ -238,7 +224,6 @@ function addLine() {
 			backgroundColor: 'rgba(255, 255, 255, 0.8)',
 			pixelOffset: new naver.maps.Point(0, -5),
 		});
-
 
 		//위의 배열을 이용해 라인 그리기
 		r2Polyline = new naver.maps.Polyline({
@@ -271,8 +256,7 @@ function addLine() {
 
 	
 	if (r1Path.length > 0){
-
-		var contentString = "<div style='letter-spacing: 1px;line-height: 25px; border: 2px solid black; border-radius: 10px; padding: 10px;'>"+
+		const contentString = "<div style='letter-spacing: 1px;line-height: 25px; border: 2px solid black; border-radius: 10px; padding: 10px;'>"+
 							"<b>Rover1 좌표</b></br>"+ 
 							"위도: "+r1Last.r1Lat+"</br>"+
 							"경도: "+r1Last.r1Lon+"</br>"+
@@ -312,18 +296,15 @@ function addLine() {
 		naver.maps.Event.addListener(r1Marker, 'click', function() {
 			r1Info.open(map, r1Marker)
 		});
-
 		map.setCenter(r1Path[r1Path.length-1]); // 중심 좌표 이동
 		$('#dataBody').html(r1Tbody);
 		$('#button1').click();
 		console.log("r1 line add")
 	}
-
 	map.setZoom(zoom); 
-
-
 }
 
+// 클릭한 Rover data의 좌표로 Marker를 재생성 하는 함수
 function focusMarker(time,lat,lon,type) {
 	console.log("focus to "+type+" marker : "+time+" ["+lat+", "+lon+"]")
 
@@ -333,7 +314,7 @@ function focusMarker(time,lat,lon,type) {
 	let pos = new naver.maps.LatLng(lat, lon)
 	map.setCenter(pos); // 중심 좌표 이동
 	
-	var contentString = "<div style='letter-spacing: 1px;line-height: 25px; border: 2px solid black; border-radius: 10px; padding: 10px;'>"+
+	const contentString = "<div style='letter-spacing: 1px;line-height: 25px; border: 2px solid black; border-radius: 10px; padding: 10px;'>"+
 			"<b>"+type+" 좌표</b></br>"+ 
 			"위도: "+lat+"</br>"+
 			"경도: "+lon+"</br>"+
@@ -391,12 +372,13 @@ function focusMarker(time,lat,lon,type) {
 	}
 }
 
+// 클릭한 Rover Data를 받아오는 함수
 function updateMap(){
     $.ajax({
 		url: "get_rover_pos.php",
 		method: "POST",
 		success: function(data){ 
-			var json_obj = JSON.parse(data);
+			const json_obj = JSON.parse(data);
 			console.log(json_obj);
 			if(json_obj.success == true){	
 				lineData = json_obj.data;
@@ -410,17 +392,12 @@ function updateMap(){
 		}
 		
 	});
-
-
 }
-
 
 $(document).ready(function() {
 	initMap();
 	updateMap();
 });
-
-	
 
 </script>
 </body>
