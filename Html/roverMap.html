@@ -1,5 +1,5 @@
 <?php 
-include_once  'apikey.php';
+	include_once  'apikey.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -9,8 +9,6 @@ include_once  'apikey.php';
         content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>CJK MAP</title>
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css" rel="stylesheet" />
-
 	<style>
         table {
             border-collapse: collapse;
@@ -393,7 +391,7 @@ function focusMarker(time,lat,lon,type) {
 	}
 }
 
-function chageLangSelect(){
+function updateMap(){
     $.ajax({
 		url: "get_rover_pos.php",
 		method: "POST",
@@ -419,7 +417,7 @@ function chageLangSelect(){
 
 $(document).ready(function() {
 	initMap();
-	chageLangSelect();
+	updateMap();
 });
 
 	
