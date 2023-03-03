@@ -6,3 +6,13 @@
 </div>
 
 코딩 학습정보 + 코딩테스트 연습
+
+
+
+
+
+
+# 환경정보
+맥북 : Mac M1 pro 16GB (Ventura 13.2.1)
+터미널 : <a href="https://danaing.github.io/etc/2022/03/28/M1-mac-iTerm2-setting.html">iterm2</a>
+코딩툴 : Visual Studio Code, Android Studio
