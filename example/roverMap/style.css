@@ -1,0 +1,42 @@
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%;
+}
+th {
+	background-color: #f9f9f9;
+}
+th, td {
+	padding: 10px;
+	position: relative;
+	border: 1px solid #e5e5e5;
+	font-size: 15px;    
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 2;
+	letter-spacing: normal;
+	color: #000000;
+}
+.button-group {
+	display: flex;
+	justify-content: center;
+}
+
+.button-group button {
+	width: 100px;
+	padding: 10px 20px;
+	border: none;
+	background-color: #ccc;
+	color: #333;
+	font-size: 16px;
+	font-weight: bold;
+	margin-right: 10px;
+	border-radius: 5px;
+}
+
+.button-group button.active {
+	background-color: #333;
+	color: #fff;
+}
