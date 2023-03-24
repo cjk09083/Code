@@ -19,7 +19,7 @@
 
 
 ## 환경정보 
-맥북 : Mac M1 pro 16GB (Ventura 13.2.1)  <br>
+노트북 : Mac M1 pro 16GB (Ventura 13.2.1)  <br>
 터미널 : <a href="https://danaing.github.io/etc/2022/03/28/M1-mac-iTerm2-setting.html">iterm2</a><br>
 코딩툴 : Visual Studio Code, Android Studio, Arduino IDE<br>
 서버관리 : FileZilla, jupyter <br>
