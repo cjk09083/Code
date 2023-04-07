@@ -42,6 +42,7 @@ void loop() {
     // Read the incoming data into a buffer
     byte data[BUFFER_SIZE];
     int size = ublox.readBytes(data, BUFFER_SIZE);
+    // lora.write(data,size);
 
     // Print the length of the received RTCM data
     Serial.print("New RTCM DATA Len: ");

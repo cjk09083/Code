@@ -6,19 +6,7 @@
 #include <SoftwareSerial.h>
 
 // RTCM message types to forward over the lora
-const int type_list[] = {
-  // 1074, 
-  1077,
-  // 1804,   
-  // 1087, 
-  // 1094,
-  // 1097,
-  // 1124, 
-  1127, 
-  // 1230, 
-  // 4072,
-  1005
-};
+const int type_list[] = { 1074, 1077, 1804, 1087, 1094, 1097, 1124, 1127, 1230, 4072, 1005 };
 
 // Function prototypes for handling RTCM data
 void handle_data(byte* raw, int size, Stream* lora, const int* type_list, int type_list_size, int aux_pin, const bool debug[]);

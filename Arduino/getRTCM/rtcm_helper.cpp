@@ -63,11 +63,11 @@ void handle_data(byte* data, int size, Stream* lora, const int* type_list, int t
           Serial.println();
         }        
 
-        wait_aux(msg_cnt, msg_type, 10, aux_pin, debug);
-        digitalWrite(LED_BUILTIN, LOW);
-        lora->write(msg, msg_len);
-        digitalWrite(LED_BUILTIN, HIGH);
-        delay(100);
+        // wait_aux(msg_cnt, msg_type, 10, aux_pin, debug);
+        // digitalWrite(LED_BUILTIN, LOW);
+        // lora->write(msg, msg_len);
+        // digitalWrite(LED_BUILTIN, HIGH);
+        // delay(100);
       }
     } else {
       // If the message type is not in the type_list, skip to the next byte
